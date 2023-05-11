@@ -17,17 +17,23 @@ obama_image = face_recognition.load_image_file("obama.jpg")
 obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
 # Load a second sample picture and learn how to recognize it.
+hrz_image = face_recognition.load_image_file("HangRuiZhi.jpg")
+hrz_face_encoding = face_recognition.face_encodings(hrz_image)[0]
+
+# Load a second sample picture and learn how to recognize it.
 biden_image = face_recognition.load_image_file("biden.jpg")
 biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
 # Create arrays of known face encodings and their names
 known_face_encodings = [
     obama_face_encoding,
-    biden_face_encoding
+    biden_face_encoding,
+    hrz_face_encoding
 ]
 known_face_names = [
     "Barack Obama",
-    "Joe Biden"
+    "Joe Biden", 
+    "HRZ"
 ]
 
 while True:
@@ -35,7 +41,8 @@ while True:
     ret, frame = video_capture.read()
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-    rgb_frame = frame[:, :, ::-1]
+    # rgb_frame = frame[:, :, ::-1]
+    rgb_frame = np.ascontiguousarray(frame[:, :, ::-1])
 
     # Find all the faces and face enqcodings in the frame of video
     face_locations = face_recognition.face_locations(rgb_frame)

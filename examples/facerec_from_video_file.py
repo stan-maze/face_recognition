@@ -1,5 +1,6 @@
 import face_recognition
 import cv2
+import numpy as np
 
 # This is a demo of running face recognition on a video file and saving the results to a new video file.
 #
@@ -8,7 +9,7 @@ import cv2
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Open the input movie file
-input_movie = cv2.VideoCapture("hamilton_clip.mp4")
+input_movie = cv2.VideoCapture("short_hamilton_clip.mp4")
 length = int(input_movie.get(cv2.CAP_PROP_FRAME_COUNT))
 
 # Create an output movie file (make sure resolution/frame rate matches input video!)
@@ -43,7 +44,11 @@ while True:
         break
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-    rgb_frame = frame[:, :, ::-1]
+    # 有问题,见https://stackoverflow.com/questions/75926662/face-recognition-problem-with-face-encodings-function/75943024#75943024
+    # rgb_frame = frame[:, :, ::-1]
+    rgb_frame = np.ascontiguousarray(frame[:, :, ::-1])
+
+    
 
     # Find all the faces and face encodings in the current frame of video
     face_locations = face_recognition.face_locations(rgb_frame)
